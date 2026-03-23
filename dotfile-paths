@@ -28,3 +28,10 @@
 .local/share/shell
 .local/share/applications/feh-viewer.desktop
 Pictures/Wallpapers
+.local/share/themes/Materia
+.local/share/themes/Materia-compact
+.local/share/themes/Materia-dark
+.local/share/themes/Materia-dark-compact
+.local/share/themes/Materia-light
+.local/share/themes/Materia-light-compact
+.Xresources
