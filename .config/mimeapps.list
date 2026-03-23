@@ -1,0 +1,8 @@
+
+[Default Applications]
+image/jpeg=feh-viewer.desktop
+image/png=feh-viewer.desktop
+image/gif=feh-viewer.desktop
+image/webp=feh-viewer.desktop
+image/bmp=feh-viewer.desktop
+image/tiff=feh-viewer.desktop

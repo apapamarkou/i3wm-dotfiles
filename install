@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+
+set -e
+
+DOTFILES="$HOME/i3wm-dotfiles"
+TMP="$(mktemp -d)"
+
+trap 'rm -rf "$TMP"' EXIT
+
+[ ! -d "$DOTFILES" ] && { echo "❌ $DOTFILES not found. Clone the repo to $HOME first."; exit 1; }
+
+cd "$DOTFILES"
+
+# install yay
+if ! command -v yay &>/dev/null; then
+    echo "⚙️ Installing yay..."
+    sudo pacman -S --needed --noconfirm git base-devel
+    git clone https://aur.archlinux.org/yay.git "$TMP/yay"
+    cd "$TMP/yay"
+    makepkg -si --noconfirm
+    cd "$DOTFILES"
+fi
+
+echo "📦 Installing repo packages..."
+sudo pacman -S --needed - < repo-pkgs.list
+
+echo "📦 Installing AUR packages..."
+yay -S --needed - < aur-pkgs.list
+
+echo "⚙️ Running post-install scripts..."
+for script in post-install-scripts/*; do
+    [ -x "$script" ] && "$script" || echo -e "\e[33m⚠ Script failed: $script\e[0m"
+done
+
+echo "📁 Installing dotfiles..."
+while read -r rel; do
+    [ -z "$rel" ] && continue
+
+    src="$DOTFILES/$rel"
+    dst="$HOME/$rel"
+
+    if [ ! -e "$src" ]; then
+        echo -e "\e[31m✖ Missing in repo: $rel\e[0m"
+        continue
+    fi
+
+    if [ -e "$dst" ]; then
+        echo -e "\e[33m⚠ Replacing $dst\e[0m"
+        rm -rf "$dst"
+    fi
+
+    mkdir -p "$(dirname "$dst")"
+    cp -a "$src" "$dst"
+
+    echo -e "\e[32m✔ Installed $rel\e[0m"
+done < "$DOTFILES/dotfile-paths"
+
+echo -e "\n\n📦 Installing YoUNiX utils...\n"
+
+curl -fsSL https://raw.githubusercontent.com/apapamarkou/appimage-integrator/main/install | bash
+curl -fsSL https://raw.githubusercontent.com/apapamarkou/lazy-pacman/main/install | bash
+curl -sSL https://raw.githubusercontent.com/apapamarkou/lazy-weather/main/install | bash
+curl -sSL https://raw.githubusercontent.com/apapamarkou/lazy-snapper/main/install | bash
+
+echo "✅ Done!"

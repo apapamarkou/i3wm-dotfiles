@@ -1,0 +1,11 @@
+{
+    "colorscheme": "simple",
+    "scrollbar": false,
+    "statusline": true,
+    "tabsize": 4,
+    "softwrap": true,
+    "cursorline": true,
+    "autosuccess": true,
+    "mouse": true,
+    "infobar": false
+}
