@@ -1,18 +1,7 @@
-sudo mkdir -p /etc/pacman.d/hooks
-sudo micro /etc/pacman.d/hooks/i3status-rust.hoo
-
-[Trigger]
-Operation = Upgrade
-Type = Package
-Target = *
-
-[Action]
-When = PostTransaction
-Exec = /usr/bin/pkill -SIGRTMIN+1 i3status-rs
+sudo dnf remove firefox azote
 
 
 
 
-after package installs 
 
-xdg-user-dirs-update
+

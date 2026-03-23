@@ -11,21 +11,8 @@ trap 'rm -rf "$TMP"' EXIT
 
 cd "$DOTFILES"
 
-# install yay
-if ! command -v yay &>/dev/null; then
-    echo "⚙️ Installing yay..."
-    sudo pacman -S --needed --noconfirm git base-devel
-    git clone https://aur.archlinux.org/yay.git "$TMP/yay"
-    cd "$TMP/yay"
-    makepkg -si --noconfirm
-    cd "$DOTFILES"
-fi
-
 echo "📦 Installing repo packages..."
-sudo pacman -S --needed - < repo-pkgs.list
-
-echo "📦 Installing AUR packages..."
-yay -S --needed - < aur-pkgs.list
+sudo dnf install -y < pkg.list
 
 echo "⚙️ Running post-install scripts..."
 for script in post-install-scripts/*; do
@@ -58,8 +45,22 @@ done < "$DOTFILES/dotfile-paths"
 echo -e "\n\n📦 Installing YoUNiX utils...\n"
 
 curl -fsSL https://raw.githubusercontent.com/apapamarkou/appimage-integrator/main/install | bash
-curl -fsSL https://raw.githubusercontent.com/apapamarkou/lazy-pacman/main/install | bash
 curl -sSL https://raw.githubusercontent.com/apapamarkou/lazy-weather/main/install | bash
 curl -sSL https://raw.githubusercontent.com/apapamarkou/lazy-snapper/main/install | bash
+curl -fsS https://dl.brave.com/install.sh | sh
+sudo rpm --import -y https://packages.microsoft.com/keys/microsoft.asc &&
+echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\nautorefresh=1\ntype=rpm-md\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" | sudo tee /etc/yum.repos.d/vscode.repo > /dev/null
+sudo dnf update
+sudo dnf install -y code
+sudo dnf install -y https://download.cdn.viber.com/desktop/Linux/viber.rpm
+sudo cat > /etc/yum.repos.d/AnyDesk-Fedora.repo << "EOF" 
+[anydesk]
+name=AnyDesk Fedora - stable
+baseurl=http://rpm.anydesk.com/fedora/$basearch/
+gpgcheck=1
+repo_gpgcheck=1
+gpgkey=https://keys.anydesk.com/repos/RPM-GPG-KEY
+EOF
+dnf install -y anydesk
 
 echo "✅ Done!"

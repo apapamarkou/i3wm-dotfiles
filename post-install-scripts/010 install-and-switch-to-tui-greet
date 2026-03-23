@@ -30,8 +30,8 @@ if [[ $confirm =~ ^[Nn]$ ]]; then
     exit 1
 fi
 
-# Install greetd and tuigreet
-sudo pacman -S --needed --noconfirm greetd-tuigreet
+# Install greetd
+sudo dnf install -y greetd
 
 
 # Disable all possible display managers
@@ -48,7 +48,7 @@ sudo tee /etc/greetd/config.toml > /dev/null << EOF
 vt = 1
 
 [default_session]
-command = "/usr/bin/tuigreet --remember"
+command = "agreety --cmd 'startx /usr/bin/env i3'"
 user = "greeter"
 EOF
 
