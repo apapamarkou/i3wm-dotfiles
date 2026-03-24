@@ -1,7 +1,32 @@
 sudo dnf remove firefox azote
 
+sudo nano /etc/default/grub
+#--> add  video=1920x1080 to GRUB_CMDLINE_LINUX
+GRUB_CMDLINE_LINUX="rhgb quiet video=1920x1080"
+#--
+sudo grub2-mkconfig -o /boot/grub2/grub.cfg
 
+sudo nano /usr/local/bin/lightdm-resolution.sh
+#--> create file with contents
+#!/bin/sh
+xrandr --output Virtual-1 --mode 1920x1080
+#--
+sudo chmod +x /usr/local/bin/lightdm-resolution.sh
 
+sudo nano /usr/local/bin/lightdm-setup.sh
+#--> create file with contents
+#!/bin/sh
+/usr/bin/numlockx on
+#--
+sudo chmod +x /usr/local/bin/lightdm-setup.sh
 
+sudo nano /etc/lightdm/lightdm.conf
+# --> change the lines in [Seat:*] section
+display-setup-script=/usr/local/bin/lightdm-resolution.sh
+greeter-setup-script=/usr/local/bin/lightdm-setup.sh
+#--
 
+# for Early TTY enable numlock run
+sudo grubby --update-kernel=ALL --args="numlock=on"
 
+gsettings get org.gnome.desktop.interface gtk-theme

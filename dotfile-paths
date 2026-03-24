@@ -35,3 +35,7 @@ Pictures/Wallpapers
 .local/share/themes/Materia-light
 .local/share/themes/Materia-light-compact
 .Xresources
+.xsessionrc
+.fehbg
+.local/bin/terminal
+.local/bin/autotiling

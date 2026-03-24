@@ -22,7 +22,7 @@ RESET="\033[0m"
 
 clear
 printf "${CYAN}"
-yprint --figlet --colot=cuan "UNIX Shell"
+yprint --figlet --colot=cuan "$DISTRO_NAME Shell"
 echo -e "${GREEN}╭────────────────────────────────────────────────╮"
 
 # 👤 User / Host

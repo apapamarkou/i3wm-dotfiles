@@ -2,7 +2,7 @@
 
 # Configuration
 SCREENSHOT_DIR="$HOME/Pictures/Screenshots"
-VIDEO_DIR="$HOME/Movies/Screencasts"
+VIDEO_DIR="$HOME/Videos/Screencasts"
 TIMESTAMP=$(date +%Y-%m-%d_%H-%M-%S)
 
 # Ensure directories exist
@@ -22,12 +22,15 @@ chosen=$(echo -e "$options" | rofi -dmenu -i -p "Capture:")
 
 case "$chosen" in
     "📸 Shot Full Screen")
+        sleep 0.5
         maim "$SCREENSHOT_DIR/Shot_$TIMESTAMP.png"
         ;;
     "🪟 Shot Window")
+        sleep 0.5
         maim -i $(xdotool getactivewindow) "$SCREENSHOT_DIR/Window_$TIMESTAMP.png"
         ;;
     "✂️ Shot Selection")
+        sleep 0.5
         maim -s "$SCREENSHOT_DIR/Select_$TIMESTAMP.png"
         ;;
     "🎥 Record Full Screen")
@@ -48,11 +51,17 @@ case "$chosen" in
         ;;
     "🎯 Record Selection")
         SEL=$(slop -f "%g")
-        ffmpeg -f x11grab -s $(echo $SEL | cut -d+ -f1) -i :0.0+$(echo $SEL | cut -d+ -f2,3) "$VIDEO_DIR/AreaRec_$TIMESTAMP.mp4" &
+        SIZE=$(echo $SEL | cut -d+ -f1)
+        X=$(echo $SEL | cut -d+ -f2)
+        Y=$(echo $SEL | cut -d+ -f3)
+        ffmpeg -f x11grab -s $SIZE -i :0.0+${X},${Y} "$VIDEO_DIR/AreaRec_$TIMESTAMP.mp4" &
         ;;
     "🎧 Record Selection + Sound")
         SEL=$(slop -f "%g")
-        ffmpeg -f x11grab -s $(echo $SEL | cut -d+ -f1) -i :0.0+$(echo $SEL | cut -d+ -f2,3) -f pulse -i default "$VIDEO_DIR/AreaRec_Audio_$TIMESTAMP.mp4" &
+        SIZE=$(echo $SEL | cut -d+ -f1)
+        X=$(echo $SEL | cut -d+ -f2)
+        Y=$(echo $SEL | cut -d+ -f3)
+        ffmpeg -f x11grab -s $SIZE -i :0.0+${X},${Y} -f pulse -i default "$VIDEO_DIR/AreaRec_Audio_$TIMESTAMP.mp4" &
         ;;
     *)
         exit 0

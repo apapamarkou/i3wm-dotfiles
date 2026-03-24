@@ -2,7 +2,7 @@ export DISTRO_NAME="YoUNiX"
 export PATH="$HOME/.local/bin:$PATH"
 
 export EDITOR=micro
-export TERMINAL=kitty
+export TERMINAL=xfce4-terminal
 export SHELL_GREETING=fetch
 
 # nvim binaries
@@ -18,6 +18,8 @@ export LESS_TERMCAP_so=$'\e[1;44;33m'
 export LESS_TERMCAP_ue=$'\e[0m'
 export LESS_TERMCAP_us=$'\e[1;32m'
 
+export GTK_THEME=Breeze:dark
+export XDG_CURRENT_DESKTOP=i3
 export QT_QPA_PLATFORMTHEME=gtk3
 export QT_FONT_DPI=96
 export QT_QPA_FONTDIR=/usr/share/fonts

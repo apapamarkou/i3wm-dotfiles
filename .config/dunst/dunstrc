@@ -12,8 +12,8 @@
     gap_size = 10
     
     # Materia-style border & rounding
-    frame_width = 2
-    corner_radius = 8
+    frame_width = 1
+    corner_radius = 4
 
     ### --- Text & Icons ---
     font = JetBrainsMono Nerd Font 10
